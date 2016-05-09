@@ -1,0 +1,7 @@
+aiohttp==0.21.2
+aiohttp-jinja2==0.7.0
+beautifulsoup4==4.4.1
+gunicorn==19.4.5
+html5lib==0.9999999
+redis==2.10.5
+requests==2.7.0

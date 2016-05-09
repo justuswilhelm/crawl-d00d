@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <title>Crawl-d00d</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Crawl-d00d's gonna do what crawl-d00d's gonna do</h1>
+      <ul class="list">
+      </ul>
+    </div>
+  </body>
+  <script>
+    function connect() {
+      var connection = new WebSocket("{{ WEBSOCKET_URL }}");
+      connection.onerror = function (e) { 
+        console.error("Something bad happened with this websocket.");
+        console.error(e);
+        setTimeout(connect, 10000);
+      }
+      connection.onmessage = function (e) {
+        function create_entry(url, title) {
+          var entry = document.createElement("li");
+          var anchor = document.createElement("a");
+          anchor.href = url;
+          anchor.innerText = title;
+          entry.appendChild(anchor);
+          return entry;
+        }
+        var result = e.data.split(',', 2);
+        var url = result[0];
+        var title = result[1];
+        var container = document.getElementsByClassName('list');
+        for (var i = 0; i < container.length; i += 1) {
+          var entry = create_entry(url, title);
+          container[i].insertBefore(entry, container[i].firstChild);
+        }
+      }
+    };
+    connect();
+  </script>
+</html>
